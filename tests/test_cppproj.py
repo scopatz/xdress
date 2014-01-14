@@ -22,6 +22,7 @@ PROJDIR = os.path.abspath(PROJNAME)
 INSTDIR = os.path.join(PROJDIR, 'install')
 ROOTDIR = os.path.splitdrive(INSTDIR)[0] or '/'
 TESTDIR = os.path.join(PROJDIR, PROJNAME, 'tests')
+THISDIR = os.path.dirname(__file__)
 
 GENERATED_PATHS = [
     [PROJDIR, 'build'],
@@ -41,9 +42,13 @@ GENERATED_PATHS = [
     [PROJDIR, PROJNAME, 'stlc.pxd'],
     [PROJDIR, PROJNAME, 'stlc.pyx'],
     [PROJDIR, PROJNAME, 'cppproj_extra_types.h'],
+    [PROJDIR, PROJNAME, '*.pyc'],
     [PROJDIR, 'src', 'basics.h.gch'],
     [TESTDIR, 'test_dt.py'],
     [TESTDIR, 'test_stlc.py'],
+    [TESTDIR, '*.pyc'],
+    [TESTDIR, '__pycache__'],
+    [THISDIR, '__pycache__'],
     [INSTDIR],
     ]
 
@@ -51,7 +56,8 @@ GENERATED_PATHS = [
 # master test function which generates the individual tests.
 @integration
 def test_all():
-    parsers = ['gccxml', 'clang']
+    #parsers = ['gccxml', 'clang']
+    parsers = ['clang']
     cases = [{'parser': p} for p in parsers]
 
     cwd = os.getcwd()

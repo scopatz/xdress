@@ -1082,7 +1082,7 @@ def clang_describe(filename, name, kind, includes=(), defines=('XDRESS',),
     ts = ts or TypeSystem()
     if onlyin is None:
         onlyin = None if filename is None else frozenset([filename])
-    onlyin = clang_fix_onlyin(onlyin)
+    #onlyin = clang_fix_onlyin(onlyin)
     if kind == 'class':
         cls = clang_find_class(tu, name, ts=ts, filename=filename, onlyin=onlyin)
         desc = clang_describe_class(cls)
