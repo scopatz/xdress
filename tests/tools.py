@@ -28,14 +28,13 @@ def cleanfs(paths):
         paths = [paths]
     for path in paths:
         path = os.path.join(*path)
-        print(path, file=sys.stderr)
         for p in glob(path):
             if os.path.isfile(p):
                 os.remove(p)
-                print(' --', p, file=sys.stderr)
+                print(' -- removed {0!r}'.format(p))
             elif os.path.isdir(p):
                 shutil.rmtree(p)
-                print(' --', p, file=sys.stderr)
+                print(' -- removed {0!r}'.format(p))
 
 def check_cmd(args, cwd, holdsrtn, suppress=True):
     """Runs a command in a subprocess and verifies that it executed properly.
