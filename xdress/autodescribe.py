@@ -444,8 +444,7 @@ class GccxmlBaseDescriber(object):
         self._currfuncsig = None
         self._currclass = []  # this must be a stack to handle nested classes
         self._level = -1
-        self._template_args = hack_template_args
-        #self._template_args.update(ts.template_types)
+        self._template_args = dict(ts.template_types)
 
     def __str__(self):
         return pformat(self.desc)
@@ -517,14 +516,22 @@ class GccxmlBaseDescriber(object):
             return 'str'
         inst = [template_name]
         self._level += 1
+        must_str_parse = True
         targ_nodes = []
         targ_islit = []
         if template_name in self._template_args:
             for targ in self._template_args[template_name]:
                 possible_targ_nodes = [c for c in children if c.attrib['name'] == targ]
+                if len(possible_targ_nodes) == 0:
+                    break
                 targ_nodes.append(possible_targ_nodes[0])
                 targ_islit.append(False)
-        else:
+            else:
+                must_str_parse = False
+            if must_str_parse:
+                targ_nodes = []
+                targ_islit = []
+        if must_str_parse:
             # gross but string parsing of node name is needed.
             targs = utils.split_template_args(name)
             query = ".//*[@name='{0}']"
