@@ -505,6 +505,7 @@ class GccxmlBaseDescriber(object):
     def _visit_template_class(self, node):
         name = node.attrib['name']
         members = node.attrib.get('members', '').strip().split()
+        children = ()
         if 0 < len(members):
             children = [child for m in members for child in \
                         self._root.iterfind(".//*[@id='{0}']".format(m))]
@@ -519,7 +520,7 @@ class GccxmlBaseDescriber(object):
         must_str_parse = True
         targ_nodes = []
         targ_islit = []
-        if template_name in self._template_args:
+        if template_name in self._template_args and len(children) > 0:
             for targ in self._template_args[template_name]:
                 possible_targ_nodes = [c for c in children if c.attrib['name'] == targ]
                 if len(possible_targ_nodes) == 0:
