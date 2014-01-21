@@ -458,16 +458,16 @@ class GccxmlBaseDescriber(object):
                                        node.attrib.get('id', ''),
                                        node.attrib.get('name', None)))
 
-    def _template_literal_arg(self, targ):
-        """Parses a literal template parameter."""
-        if targ == 'true':
-            return True
-        elif targ == 'false':
-            return False
-        m = _GCCXML_LITERAL_INTS.match(targ)
-        if m is not None:
-            return int(m.group(1))
-        return targ
+#    def _template_literal_arg(self, targ):
+#        """Parses a literal template parameter."""
+#        if targ == 'true':
+#            return True
+#        elif targ == 'false':
+#            return False
+#        m = _GCCXML_LITERAL_INTS.match(targ)
+#        if m is not None:
+#            return int(m.group(1))
+#        return targ
 
     def _visit_template_function(self, node):
         nodename = node.attrib['name']
@@ -486,7 +486,9 @@ class GccxmlBaseDescriber(object):
         for targ in template_args:
             targ_node = self._root.find(query.format(targ))
             if targ_node is None:
-                targ_node = self._template_literal_arg(targ)
+                #targ_node = self._template_literal_arg(targ)
+                print(targ)
+                targ_node = c_literal(targ)
                 targ_islit.append(True)
             else:
                 targ_islit.append(False)
@@ -539,7 +541,9 @@ class GccxmlBaseDescriber(object):
             for targ in targs:
                 targ_node = self._root.find(query.format(targ))
                 if targ_node is None:
-                    targ_node = self._template_literal_arg(targ)
+                    #targ_node = self._template_literal_arg(targ)
+                    targ_node = c_literal(targ)
+                    print(targ)
                     targ_islit.append(True)
                 else:
                     targ_islit.append(False)
