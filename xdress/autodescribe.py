@@ -196,6 +196,8 @@ import subprocess
 import itertools
 import functools
 import pickle
+import ntpath
+import posixpath
 import collections
 from hashlib import md5
 from numbers import Number
@@ -203,9 +205,6 @@ from pprint import pprint, pformat
 from warnings import warn
 from functools import reduce
 
-if os.name == 'nt':
-    import ntpath
-    import posixpath
 
 # pycparser conditional imports
 try:
@@ -233,6 +232,10 @@ if sys.version_info[0] >= 3:
 
 # d = int64, u = uint64
 _GCCXML_LITERAL_INTS = re.compile('(\d+)([du]?)')
+
+
+def posix_replace(p):
+    return posixpath.join(*p.rsplit(ntpath.sep, 1)) if ntpath.sep in p else p
 
 def clearmemo():
     """Clears all function memoizations for autodescribers."""
@@ -426,10 +429,15 @@ class GccxmlBaseDescriber(object):
         for fnode in root.iterfind("File"):
             fid = fnode.attrib['id']
             fname = fnode.attrib['name']
-
             self._filemap[fid] = fname
         for fname in onlyin:
             fnode = root.find("File[@name='{0}']".format(fname))
+            if os.name == 'nt' and fnode is None:
+                # GCC-XML prefers posix paths, even on windows
+                _fname = fname
+                while fnode is None and ntpath.sep in _fname:
+                    _fname = posix_replace(_fname)
+                    fnode = root.find("File[@name='{0}']".format(_fname))
             if fnode is None:
                 fnode = root.find("File[@name='./{0}']".format(fname))
                 if fnode is None:
