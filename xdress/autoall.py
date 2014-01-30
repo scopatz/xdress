@@ -197,9 +197,6 @@ def gccxml_findall(filename, includes=(), defines=('XDRESS',), undefines=(),
         A list of class names to wrap from the file.
 
     """
-    if os.name == 'nt':
-        # GCC-XML and/or Cygwin wants posix paths on Windows.
-        filename = posixpath.join(*ntpath.split(filename))
     root = astparsers.gccxml_parse(filename, includes=includes, defines=defines,
             undefines=undefines, extra_parser_args=extra_parser_args, verbose=verbose, 
             debug=debug, builddir=builddir)

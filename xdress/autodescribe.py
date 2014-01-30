@@ -377,8 +377,7 @@ def gccxml_describe(filename, name, kind, includes=(), defines=('XDRESS',),
         API bindings.
     """
     # GCC-XML and/or Cygwin wants posix paths on Windows.
-    posixfilename = posixpath.join(*ntpath.split(filename)) if os.name == 'nt' \
-                    else filename
+    posixfilename = filename 
     root = astparsers.gccxml_parse(posixfilename, includes=includes, defines=defines,
                                    undefines=undefines, 
                                    extra_parser_args=extra_parser_args, 
