@@ -420,6 +420,7 @@ def gccxml_describe(filename, name, kind, includes=(), defines=('XDRESS',),
     root = astparsers.gccxml_parse(filename, includes=includes, defines=defines,
                                    undefines=undefines, 
                                    extra_parser_args=extra_parser_args, 
+                                   verbose=verbose, debug=debug, builddir=builddir)
     if onlyin is None:
         onlyin = set([filename])
     describers = {'class': GccxmlClassDescriber, 'func': GccxmlFuncDescriber,
