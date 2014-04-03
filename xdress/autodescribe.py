@@ -2083,10 +2083,11 @@ class PycparserClassDescriber(PycparserBaseDescriber):
                 if isinstance(child, pycparser.c_ast.Typedef) and \
                    isinstance(child.type, pycparser.c_ast.TypeDecl) and \
                    isinstance(child.type.type, construct_types):
+                    #import pdb; pdb.set_trace()
                     child = child.type.type
                 if not isinstance(child, construct_types):
                     continue
-                if child.name != self.name:
+                if (child.name is not None) and (child.name != self.name):
                     continue
                 self.desc['construct'] = construct_typemap[type(child)]
                 self.visit_members(child)
