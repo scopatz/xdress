@@ -122,8 +122,8 @@ def setup():
     version = 0,
     if llvm_config is not None:
         try:
-            llvm_cppflags = (   os.environ.get('LLVM_CPPFLAGS')
-                             or subprocess.check_output([llvm_config,'--cppflags'])).split()
+            llvm_cppflags = (os.environ.get('LLVM_CPPFLAGS') or 
+                             subprocess.check_output([llvm_config,'--cppflags'])).split()
             try:
                 llvm_ldflags = os.environ['LLVM_LDFLAGS'].split()
             except KeyError:
@@ -138,11 +138,12 @@ def setup():
         version = tuple(int(part) for part in version.strip().split('.'))
         clang_dir = os.path.join(dir_name, 'xdress', 'clang')
         clang_src_dir = os.path.join(clang_dir, 'src')
-        clang_libs = (   os.environ.get('CLANG_LIBS')
-                      or '''clangTooling clangFrontend clangDriver clangSerialization clangCodeGen
-                            clangParse clangSema clangStaticAnalyzerFrontend clangARCMigrate
-                            clangStaticAnalyzerCheckers clangStaticAnalyzerCore clangAnalysis clangEdit
-                            clangRewriteCore clangAST clangLex clangBasic''').split()
+        clang_libs = (os.environ.get('CLANG_LIBS') or 
+                      '''clangTooling clangFrontend clangDriver clangSerialization 
+                      clangCodeGen clangParse clangSema clangStaticAnalyzerFrontend 
+                      clangARCMigrate clangStaticAnalyzerCheckers 
+                      clangStaticAnalyzerCore clangAnalysis clangEdit clangRewriteCore 
+                      clangAST clangLex clangBasic''').split()
         # If the user sets CFLAGS, make sure we still have our own include path first
         if 'CFLAGS' in os.environ:
             os.environ['CFLAGS'] = '-I%s '%clang_dir + os.environ['CFLAGS']
