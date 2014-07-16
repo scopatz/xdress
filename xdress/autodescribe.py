@@ -571,6 +571,7 @@ class GccxmlBaseDescriber(object):
             tags = [child.tag for child in children]
             template_name = children[tags.index('Constructor')].attrib['name']  # 'map'
         else:
+            children = tags = ()
             template_name = name.split('<', 1)[0]
         if template_name == 'basic_string':
             return 'str'
