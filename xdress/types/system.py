@@ -927,8 +927,10 @@ class TypeSystem(object):
         elif 3 <= tlen:
             assert t[0] in self.template_types
             assert len(t) == len(self.template_types[t[0]]) + 2
-            template_name = self.cython_ctypes[t[0]]
-            assert template_name is not NotImplemented
+            template_name = self.cython_ctypes.get(t[0], NotImplemented)
+            if template_name is NotImplemented:
+                msg = 'The Cython C-type {0!r} for type {1!r} has not been implemented.'
+                raise NotImplementedError(msg.format(t[0], t))
             template_filling = []
             for x in t[1:-1]:
                 #if isinstance(x, bool):
