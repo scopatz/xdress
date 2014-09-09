@@ -381,7 +381,7 @@ def _pformat_etree_inplace(elem, level=0):
             elem.tail = i
 
 def dumpast(filename, parsers, sourcedir, includes=(), defines=('XDRESS',),
-            undefines=(), verbose=False, debug=False, builddir='build'):
+            undefines=(), verbose=False, debug=False, builddir='build', **kwargs):
     """Prints an abstract syntax tree to stdout."""
     if not os.path.isfile(filename):
         filename = os.path.join(sourcedir, filename)
@@ -402,6 +402,11 @@ def dumpast(filename, parsers, sourcedir, includes=(), defines=('XDRESS',),
         else:
             _pformat_etree_inplace(root)
             print(etree.tostring(root))
+    elif parser == 'clang':
+        root = clang_parse(filename, includes=includes, defines=defines,
+                           undefines=undefines, verbose=verbose, debug=debug,
+                           builddir=builddir, **kwargs)
+        print(root)
     else:
         sys.exit(parser + " is not a valid parser")
 
